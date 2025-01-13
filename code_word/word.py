@@ -1,12 +1,27 @@
 from docx import Document
 from docx.shared import Inches
 import os
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 
 # 创建Word文档对象
 doc = Document()
 
-# 添加标题
-doc.add_heading('期末大作业报告', 0)
+# 设置封面
+# 添加封面内容，确保是垂直和水平居中的
+# 插入空白段落以确保居中
+doc.add_paragraph('\n\n\n\n\n\n\n\n\n\n\n\n\n\n')  # 15个换行符，调整垂直居中的位置
+
+# 设置封面标题
+doc.add_paragraph('Python期末大作业报告', style='Title').alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+# 项目标题
+doc.add_paragraph('项目：基于Python的二手车数据分析').alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+# 作者信息
+doc.add_paragraph('姓名：李新鲜\n学号：2405550340\n日期：2024年12月15日').alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+
+# 插入分页符，结束封面，开始正文
+doc.add_page_break()
 
 # 创建图片保存文件夹
 if not os.path.exists("images"):
@@ -15,17 +30,29 @@ if not os.path.exists("images"):
 # 1. 概要
 doc.add_heading('1. 概要', level=1)
 doc.add_paragraph(
-    """随着数据分析和机器学习技术的发展，数据的可视化成为了数据分析中不可或缺的一部分。尤其在二手车市场分析中，通过对车辆数据进行深入分析，能够揭示出市场的潜在规律及趋势，从而为决策者提供有价值的参考。本报告基于二手车数据集，利用 Python 中的 Pandas、Matplotlib 和 Seaborn 等可视化工具，对数据进行了清洗、处理和可视化，展示了二手车市场中的一些重要特征和趋势。
+    """    随着数据分析和机器学习技术的发展，数据的可视化成为了数据分析中不可或缺的一部分。尤其在二手车市场分析中，通过对车辆数据进行深入分析，能够揭示出市场的潜在规律及趋势，从而为决策者提供有价值的参考。本报告基于二手车数据集，利用 Python 中的 Pandas、Matplotlib 和 Seaborn 等可视化工具，对数据进行了清洗、处理和可视化，展示了二手车市场中的一些重要特征和趋势。
 
     通过对数据的初步分析，首先筛选出未上牌车辆的比例并对其进行统计；接着，通过对车辆的品牌、车龄、里程和价格等特征进行进一步分析，我们生成了多种图表，展示了不同品牌的销售占比、车龄分布、车型价格分布以及价格与里程的关系。我们还对奥迪品牌进行了详细的分析，展示了其不同车型的里程变化情况，进一步探讨了奥迪品牌与价格的关系。
 
     在整个数据处理过程中，我们进行了数据清洗和转换，确保数据格式的统一性和可操作性。最终，基于这些分析结果，我们生成了八个关键图表，并将这些图表插入到 Word 报告中，使得报告更具可读性和可操作性。本报告为二手车市场的分析提供了一个基本框架，并展示了如何使用 Python 实现数据清洗、分析和可视化。"""
 )
 
+# 1. 概要
+doc.add_heading('1. essentials', level=1)
+doc.add_paragraph(
+    """    With the development of data analysis and machine learning technologies, data visualization has become an indispensable part of data analysis.Especially in the analysis of the used car market, through in-depth analysis of vehicle data, it can reveal potential patterns and trends in the market, thereby providing valuable references for decision-makers.This report is based on a used car dataset and utilizes visualization tools such as Pandas, Matplotlib, and Seaborn from Python to clean, process, and visualize the data, showcasing some important characteristics and trends in the used car market.
+
+    Through preliminary data analysis, we first screened out the proportion of unregistered vehicles and conducted statistics; then, by further analyzing characteristics such as vehicle brand, age, mileage, and price, we generated various charts showing the sales ratio of different brands, age distribution, model price distribution, and the relationship between price and mileage.We also conducted a detailed analysis of the Audi brand, showcasing the mileage variation of its different models and further exploring the relationship between the Audi brand and price.
+
+    Throughout the data processing, we conducted data cleaning and transformation to ensure the uniformity and operability of the data format.Finally, based on these analytical results, we generated eight key charts and inserted them into the Word report to make the report more readable and operational.This report provides a basic framework for the analysis of the used car market and demonstrates how to use Python for data cleaning, analysis, and visualization."""
+)
+
+doc.add_page_break()
+
 # 2. 相关技术
 doc.add_heading('2. 相关技术', level=1)
 doc.add_paragraph(
-    """在本项目中，我们主要使用了以下几种技术和工具：
+    """    在本项目中，我们主要使用了以下几种技术和工具：
 
     - **Pandas**：作为 Python 中用于数据处理的核心库，Pandas 提供了强大的数据结构（如 DataFrame）和数据处理功能（如数据清洗、处理缺失值、数据转换等）。在本项目中，Pandas 主要用于读取 CSV 格式的二手车数据集，并对数据进行筛选、清洗、转换和聚合等处理。
 
@@ -38,10 +65,12 @@ doc.add_paragraph(
     在数据清洗和转换阶段，Pandas 用于处理和转换数据中的字符串和数值，例如从 `Boarding_time` 列中提取出年份，并将价格和里程字段中的单位（如 "万"）去除，转化为数值类型。之后，使用 Matplotlib 和 Seaborn 生成图表，这些图表展示了二手车数据的各个方面，包括品牌占比、车龄、价格分布等信息。"""
 )
 
+doc.add_page_break()
+
 # 3. 具体实现
 doc.add_heading('3. 具体实现', level=1)
 doc.add_paragraph(
-    """以下是实现过程的详细代码，包括生成的8个图表以及对应的代码。所有图表将保存在 'images' 文件夹中，以便插入到最终的 Word 报告中。
+    """    以下是实现过程的详细代码，包括生成的8个图表以及对应的代码。所有图表将保存在 'images' 文件夹中，以便插入到最终的 Word 报告中。
 
     1. 数据预处理：首先，我们从 CSV 文件中读取二手车数据，并进行初步的清洗与转换，例如从 `Boarding_time` 列中提取年份信息，去除价格与里程字段中的单位等。
 
@@ -242,13 +271,18 @@ plt.show()
 '''
 doc.add_paragraph(code8)
 
+doc.add_page_break()
+
 # 4. 致谢
 doc.add_heading('4. 致谢', level=1)
 doc.add_paragraph(
-    """首先，感谢提供二手车数据集，使得本次分析能够顺利进行。感谢 Python 开发社区，特别是 Pandas、Matplotlib 和 Seaborn 等库的开发者，提供了强大的数据分析和可视化支持。尤其是这些工具能够让我们快速地完成数据清洗、处理和可视化任务，提高了工作效率。感谢导师在本项目中的指导与支持，在数据清洗、分析和可视化的过程中提供了宝贵的意见和建议，帮助我克服了遇到的困难和挑战。此外，感谢同学们在项目讨论中的积极参与，他们提出了许多有价值的想法和建议，使得我对二手车市场有了更深入的理解和认识。最后，感谢家人的理解与支持，他们在我忙碌的过程中给予了我很多鼓励和帮助，使我能够顺利完成此项工作。"""
+    """    首先，感谢提供二手车数据集，使得本次分析能够顺利进行。感谢 Python 开发社区，特别是 Pandas、Matplotlib 和 Seaborn 等库的开发者，提供了强大的数据分析和可视化支持。尤其是这些工具能够让我们快速地完成数据清洗、处理和可视化任务，提高了工作效率。
+        感谢导师在本项目中的指导与支持，在数据清洗、分析和可视化的过程中提供了宝贵的意见和建议，帮助我克服了遇到的困难和挑战。
+        此外，感谢组员们在项目讨论中的积极参与，她们提出了许多有价值的想法和建议，使得我对二手车市场有了更深入的理解和认识。
+        最后，感谢家人的理解与支持，他们在我忙碌的过程中给予了我很多鼓励和帮助，使我能够顺利完成此项工作。"""
 )
 
 # 保存文档
-doc.save("期末大作业报告.docx")
+doc.save("Python期末大作业报告.docx")
 
-print("报告已成功保存为'期末大作业报告.docx'")
+print("报告已成功保存为'Python期末大作业报告.docx'")
